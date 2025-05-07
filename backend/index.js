@@ -5,7 +5,13 @@ const cors = require("cors");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const { connectDB } = require("./config/mongodb");
+
+
 const userRouter = require("./routes/userRouter")
+const postRouter = require("./routes/postRouter")
+const messageRouter = require("./routes/chatingRouter")
+
+
 const app = express();
 const corsOptions = { 
     origin: "http://localhost:5173",
@@ -20,6 +26,8 @@ app.use(express.static(path.resolve(__dirname, 'public')));
 
 //all apis
 app.use("/api/user" , userRouter)
+app.use("/api/post" , postRouter)
+app.use("/api/message" , messageRouter)
 
 
 app.get('/' , (req, res) => {

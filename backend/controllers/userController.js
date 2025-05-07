@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt")
 const {createToken} = require("../utils/generateToken")
 const {getDataUri} = require("../utils/dataURI")
 const cloudinary = require("../config/cloudinary")
+const Post = require("../models/post")
 
 const register = async (req,res) => {
     try {
@@ -71,6 +72,22 @@ const login = async (req,res) => {
             })
         }
 
+        const token = createToken(user._id)
+
+        //populate each post if in the posts 
+        const populatedPosts = await Promise.all(
+
+            user.posts.map(async (postid) => {
+                const post = await Post.findById(postid)
+                if(post.author.equals(user._id)){
+                    return post
+                }
+                return null
+            })
+            
+        )
+
+
         user = {
             _id:user._id,
             username:user.username,
@@ -79,10 +96,9 @@ const login = async (req,res) => {
             bio:user.bio,
             followers:user.followers,
             following:user.following,
-            posts:user.posts
+            posts:populatedPosts
         }
 
-        const token = createToken(user._id)
 
         return res.cookie('token' , token , {httpOnly:true , sameSite:'strict' , maxAge:1*24*60*60*1000}).json({
             success:true,

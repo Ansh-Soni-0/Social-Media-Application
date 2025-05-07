@@ -2,6 +2,7 @@ const sharp = require("sharp");
 const cloudinary = require("../config/cloudinary");
 const Post = require("../models/post")
 const User = require("../models/user")
+const Comment = require("../models/comment")
 
 const addNewPost = async (req, res) => {
   try {
@@ -66,6 +67,9 @@ const getAllPost = async (req , res) => {
                 select:"username , profilePicture"
             }
         })
+
+        console.log(posts);
+        
 
         return res.status(200).json({
             posts,
