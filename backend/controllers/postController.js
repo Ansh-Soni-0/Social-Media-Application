@@ -58,13 +58,13 @@ const addNewPost = async (req, res) => {
 const getAllPost = async (req , res) => {
     try {
         const posts = await Post.find().sort({createdAt:-1})
-        .populate({path:'author' , select:"username,profilePicture"})
+        .populate({path:'author' , select:"username profilePicture"})
         .populate({
             path:"comments",
             sort:{createdAt:-1},
             populate:{
                 path:'author',
-                select:"username , profilePicture"
+                select:"username profilePicture"
             }
         })
 
@@ -87,14 +87,14 @@ const getUserPost = async (req, res) => {
         const posts = await Post.find({author:authorId}).sort({createdAt:-1})
         .populate({
             path:"author",
-            select:"username , profilePicture"
+            select:"username profilePicture"
         })
         .populate({
             path:"comments",
             sort:{createdAt:-1},
             populate:{
                 path:'author',
-                select:"username , profilePicture"
+                select:"username profilePicture"
             }
         });
 
@@ -172,6 +172,8 @@ const addComment = async (req , res) => {
         const postId = req.params.id;
         const commentKarneWaleUserKiId = req.id;
 
+        // console.log(req.body)
+        
         //get comment text from body
         const {text} = req.body;
 
@@ -192,7 +194,7 @@ const addComment = async (req , res) => {
 
         await comment.populate({
             path:'author',
-            select:"username , profilePicture"
+            select:"username profilePicture"
         })
 
         post.comments.push(comment._id)
@@ -240,9 +242,16 @@ const deletePost = async (req, res) => {
 
         const authorId = req.id;
 
+        // console.log(postId);
+        // console.log(authorId);
+        
+
         const post = await Post.findById(postId);
 
-        if(post){
+        // console.log(post);
+        
+
+        if(!post){
             return res.status(404).json({
                 message:"post not found",
                 success:false
@@ -250,7 +259,7 @@ const deletePost = async (req, res) => {
         }
 
         // check if the logged-in user is the owner of not
-        if(postId.author.toString() !== authorId){
+        if(post.author.toString() !== authorId){
             return res.status(403).json({
                 message:"Unauthorized"
             })
