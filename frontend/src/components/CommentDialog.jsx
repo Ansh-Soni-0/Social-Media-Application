@@ -7,7 +7,6 @@ import { Link } from 'react-router-dom';
 import { MoreHorizontal } from 'lucide-react';
 import { Button } from './ui/button';
 import { useDispatch, useSelector } from 'react-redux';
-import store from '@/redux/store';
 import Comment from './Comment';
 import axios from 'axios';
 import { backend_url } from '@/App';
@@ -89,14 +88,16 @@ const CommentDialog = ({open , setOpen }) => {
     <>
         <Dialog open={open}>
             <DialogContent
+            size="full"
+            style={{ width: '50vw', maxWidth: 'none', height: 'auto', maxHeight: 'none' }}
             aria-describedby="comment-dialog-description"
-            className="max-w-5xl p-0 flex flex-col"
+            className="p-0 flex flex-col"
             onInteractOutside={() => setOpen(false)}>
 
-                <DialogTitle />
-                <DialogDescription />
+                <DialogTitle className="hidden"/>
+                <DialogDescription className="hidden"/>
 
-                <div className='flex flex-1 gap-2'>
+                <div className='w-[100%] flex flex-1 gap-2'>
 
                     {/* left image  */}
                     <div className='w-1/2'>
@@ -108,7 +109,7 @@ const CommentDialog = ({open , setOpen }) => {
                     
 
 
-                    {/* right image */}
+                    {/* right comment box */}
                     <div className='w-1/2 flex flex-col justify-between'>
 
                         <div className='flex items-center justify-between p-4'>

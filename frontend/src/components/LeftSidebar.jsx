@@ -29,16 +29,16 @@ const LeftSidebar = () => {
 
     const logoutHandler = async () => {
         try {
-            const responce = await axios.get(backend_url + "/api/user/logout" ,{withCredentials:true});
+            const response = await axios.get(backend_url + "/api/user/logout" ,{withCredentials:true});
 
-            if(responce.data.success){
+            if(response.data.success){
               
                 dispatch(setAuthUser(null))
                 dispatch(setSelectedPost(null))
                 dispatch(setPosts([]))
 
                 navigate("/login")
-                toast.success(responce.data.message)
+                toast.success(response.data.message)
             }
         } catch (error) {
             toast.error(error.message)
@@ -49,7 +49,9 @@ const LeftSidebar = () => {
 
     const sidebarHandler = (textType) => {
         if(textType === "Logout") logoutHandler();
-        else if(textType === "Create") setOpen(true)
+        else if(textType === "Create") setOpen(true);
+        else if(textType === "Profile") navigate(`/profile/${user?._id}`)
+        else if(textType === "Home") navigate("/")
     }
 
     const sidebarItems = [
@@ -62,7 +64,7 @@ const LeftSidebar = () => {
   {
     icon: (
       <Avatar className="w-6 h-6">
-        <AvatarImage src={user?.profilePicture} alt="avatar" className="rounded-full"/>
+        <AvatarImage src={user?.profilePicture} alt="avatar" className="rounded-full w-6 h-6"/>
         <AvatarFallback>CN</AvatarFallback>
       </Avatar>
     ),

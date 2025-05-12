@@ -14,6 +14,7 @@ import { backend_url } from '@/App'
 import { DialogTitle } from '@radix-ui/react-dialog'
 import default2 from '../assets/default2.webp'
 import { Badge } from './ui/badge'
+import { Link } from 'react-router-dom'
 
 const Post = ({ post }) => {
     const [open , setOpen] = useState(false)
@@ -158,12 +159,14 @@ const Post = ({ post }) => {
 
             <div className='flex items-center gap-2'>
 
-                <Avatar>
+                <Link>
+                    <Avatar>
                     <AvatarImage
                      src={post.author?.profilePicture || default2} 
                      alt="avatar"/>
                     <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
+                    </Avatar>
+                </Link>
 
                 <div className='flex gap-3 items-center'>
                     <h1>{post?.author?.username || "Unknown"}</h1>
