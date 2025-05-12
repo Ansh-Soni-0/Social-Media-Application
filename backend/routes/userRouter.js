@@ -18,7 +18,7 @@ userRouter.post("/register" , register)
 userRouter.post("/login" , login)
 userRouter.get("/logout" , logout)
 userRouter.get("/:id/profile" ,isAuthenticated , getProfile)
-userRouter.post("/profile/edit" ,isAuthenticated, upload.single("profilePicture") , editProfile)
+userRouter.post("/profile/edit" ,isAuthenticated, upload.single("profilePhoto") , editProfile)
 userRouter.get("/suggested" , isAuthenticated , getSuggestedUser)
 userRouter.post("/followorunfollow/:id" , isAuthenticated , followOrUnfollow)
 
