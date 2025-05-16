@@ -13,12 +13,16 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setSocket } from './redux/socketSlice'
 import { setOnlineUsers } from './redux/chatSlice'
 import { setLikeNotification } from './redux/realTimeNotiSlice'
+// import ProtectedRoutes from './components/ProtectedRoutes'
 export const backend_url = import.meta.env.VITE_BACKEND_URL
 
 const browserRouter = createBrowserRouter([
   {
     path:'/',
-    element:<MainLayout />,
+    element:
+    // (<ProtectedRoutes>
+      <MainLayout />,
+    // </ProtectedRoutes>),
     children:[
       {
         path:'/',

@@ -27,17 +27,14 @@ const LeftSidebar = () => {
     const { user } = useSelector(store => store.auth)
     const dispatch = useDispatch()
     const [open , setOpen] = useState(false)
-    const { likeNotification } = useSelector(store => store.realTimeNotification) || []
-    
+    const { likeNotification } = useSelector(store => store.realTimeNotification)
 
+    const [isNotification , setIsNotification] = useState(false)
     
     // console.log(likeNotification[0].userDetails.username);
     // console.log(likeNotification.length);
     // console.log(likeNotification[0]);
     
-    
-    
-
 
     const logoutHandler = async () => {
         try {
@@ -65,6 +62,7 @@ const LeftSidebar = () => {
         else if(textType === "Profile") navigate(`/profile/${user?._id}`)
         else if(textType === "Home") navigate("/")
         else if(textType === "Messages") navigate("/chat")
+        else if(textType === "Notifications") setIsNotification(true)
     }
 
     const sidebarItems = [
@@ -114,18 +112,18 @@ const LeftSidebar = () => {
 
                           {
                             ((item.text === "Notifications") && (likeNotification?.length > 0)) && (
-                              <Popover>
+                              <Popover open={isNotification} onOpenChange={setIsNotification}>
                                 <PopoverTrigger asChild>
-                                  
+                                 
                                     <Button
-                                    onClick={(e) => e.stopPropagation()} 
                                     className="rounded-full h-5 w-5 bg-red-500 hover:bg-red-500 absolute bottom-6 left-6 cursor-pointer"
-                                    size="icon">{likeNotification.length}</Button>
+                                    size="icon">{likeNotification.length}
+                                    </Button>  
                                   
                                 </PopoverTrigger>
 
                                 
-                                <PopoverContent className="p-1 ml-4 mt-2 h-[300px] overflow-auto">
+                                <PopoverContent className="p-1 ml-4 mt-2 h-64 overflow-auto">
                                   <div>
                                     {
                                       likeNotification.length === 0 ? (<p>No new notification</p>) : 

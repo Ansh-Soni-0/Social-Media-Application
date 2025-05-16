@@ -1,6 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import { Dialog, DialogContent, DialogDescription, DialogTrigger } from './ui/dialog'
 import { Bookmark, MessageCircle, MoreHorizontal, Send } from 'lucide-react'
+import { FaBookmark } from "react-icons/fa6";
 import React, { lazy, useEffect, useState } from 'react'
 import { Button } from './ui/button'
 import { FaHeart , FaRegHeart } from "react-icons/fa";
@@ -35,6 +36,7 @@ const Post = ({ post }) => {
     const [postLike , setPostLike] = useState(post.likes.length)
 
     const [comment , setComment] = useState(post.comments)
+
 
     const dispatch = useDispatch()
 
@@ -141,6 +143,23 @@ const Post = ({ post }) => {
         }
     }
 
+    const bookMarkHandler = async () => {
+        try {
+            
+            const response = await axios.get(backend_url + `/api/post/${post?._id}/bookmark` , {withCredentials:true});
+
+            // console.log(response.data.type);
+
+            // console.log(isBookmark);
+        
+            if(response.data.success){
+                toast.success(response.data.message)
+            }
+        } catch (error) {
+            console.log(error.message);
+            toast(error.message)
+        } 
+    }
     // useEffect(() => {
       
     //  console.log(post?.author?.username);
@@ -195,9 +214,16 @@ const Post = ({ post }) => {
                     <DialogTitle />
                     <DialogDescription/>
 
-                    <Button variant='ghost' className="cursor-pointer w-fit text-[#ED4956] font-bold">
-                        unfollow
-                    </Button>
+                    {
+                        (post?.author?._id !== user?._id) && 
+                            <Button variant='ghost' className="cursor-pointer w-fit text-[#ED4956] font-bold">
+                            unfollow
+                            </Button>
+                    }
+
+                    
+
+
                     <Button variant='ghost' className="cursor-pointer w-fit ">
                         Add To Favorites
                     </Button>
@@ -262,7 +288,12 @@ const Post = ({ post }) => {
 
             </div>
 
-            <Bookmark className='cursor-pointer hover:opacity-[0.4] duration-200'/>
+           
+            <Bookmark 
+            onClick={bookMarkHandler}
+            className='cursor-pointer hover:opacity-[0.4] duration-200'/>
+
+            
 
         </div>
 

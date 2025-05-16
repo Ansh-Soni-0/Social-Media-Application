@@ -8,7 +8,7 @@ import { toast } from 'sonner';
 import { backend_url } from '@/App';
 import { Link, useNavigate } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setAuthUser } from '@/redux/authSlice';
 
 
@@ -25,9 +25,12 @@ const Login = () => {
 
     const dispatch = useDispatch()
 
+    const {user} = useSelector(store => store.auth)
+
     const changeEventHandler = (e) => {
         setInput({...input , [e.target.name]:e.target.value})
     }
+
 
     const signupHandler = async (e) => {
         e.preventDefault();
@@ -68,9 +71,11 @@ const Login = () => {
         }
     }
 
-    useEffect(() => {
-        console.log(backend_url + "/api/user/register");
-    }, [])
+    // useEffect(() => {
+    //     if(user) {
+    //         navigate("/")
+    //     }
+    // }, [])
     
     
 
