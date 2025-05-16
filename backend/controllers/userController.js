@@ -208,8 +208,8 @@ const followOrUnfollow = async (req,res) => {
         const folloKarneWala = req.id //apni id
         const jiskoFollowKaruga = req.params.id //other user id
 
-        console.log(folloKarneWala);
-        console.log(jiskoFollowKaruga);
+        // console.log(folloKarneWala);
+        // console.log(jiskoFollowKaruga);
         
         if(folloKarneWala === jiskoFollowKaruga){
             return res.status(400).json({

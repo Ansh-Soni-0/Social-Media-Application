@@ -11,8 +11,10 @@ const userRouter = require("./routes/userRouter")
 const postRouter = require("./routes/postRouter")
 const messageRouter = require("./routes/chatingRouter")
 
+const {app , server , io} = require("./socket/socket")
 
-const app = express();
+
+// const app = express();
 const corsOptions = { 
     origin: "http://localhost:5173",
     credentials: true 
@@ -40,7 +42,7 @@ app.get('/' , (req, res) => {
 
 
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   connectDB()
   console.log(`Server Listen At Port ${PORT}`);
 });

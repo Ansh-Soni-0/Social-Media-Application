@@ -1,12 +1,17 @@
 const Conversation = require("../models/conversation")
 const Message = require("../models/message")
+const {io} = require("../socket/socket")
+
+const {getRecieverSocketId} = require("../socket/socket")
 
 const sendMessage = async (req , res) => {
     try {
 
         const senderId = req.id;
         const receiverId = req.params.id;
-        const { message } = req.body;
+        const { textMessage:message } = req.body;
+        console.log(message);
+        
 
         let conversation = await Conversation.findOne({
             participants:{$all:[senderId , receiverId]}
@@ -34,11 +39,11 @@ const sendMessage = async (req , res) => {
         await Promise.all([conversation.save() , newMessage.save()])
 
         // implement socketio for real time data transfer soon
-
-
-
-
-        return res.status(202).json({
+        const reciverSocketId = getRecieverSocketId(receiverId)
+        if(reciverSocketId) {
+            io.to(reciverSocketId).emit('newMessage' , newMessage)
+        }
+        return res.status(201).json({
             success:true,
             newMessage
         })
@@ -54,7 +59,7 @@ const getMessage = async (req , res) => {
         const receiverId = req.params.id;
         let conversation = await Conversation.findOne({
             participants:{$all:[senderId , receiverId]}
-        })
+        }).populate('messages');
 
         if(!conversation){
             return res.status(200).json({
@@ -65,7 +70,7 @@ const getMessage = async (req , res) => {
 
         return res.status(200).json({
             success:true,
-            message:conversation?.messages
+            messages:conversation?.messages
         })
 
         
