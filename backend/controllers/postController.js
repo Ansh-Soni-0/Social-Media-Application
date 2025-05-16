@@ -350,7 +350,7 @@ const bookmarkPost = async (req , res) => {
             await user.save()
 
             return res.status(200).json({
-                type:'Saved',
+                type:'saved',
                 message:"Post bookmarked",
                 success:true
             })
