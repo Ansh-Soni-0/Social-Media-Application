@@ -12,9 +12,12 @@ const rtnSlice = createSlice({
             } else if(action.payload.type === 'dislike'){
                 state.likeNotification = state.likeNotification.filter((item) => item?.userId !== action.payload.userId) 
             } 
-        }
+        },
+        clearNotifications: (state) => {
+            state.likeNotification = [];
+        },
     }
 })
 
-export const {setLikeNotification} = rtnSlice.actions
+export const {setLikeNotification , clearNotifications} = rtnSlice.actions
 export default rtnSlice.reducer

@@ -8,25 +8,42 @@ import { Badge } from "./ui/badge";
 import { AtSign} from "lucide-react";
 import { FaHeart } from "react-icons/fa6";
 import { FaComment } from "react-icons/fa";
+import { toast } from "sonner";
+import axios from "axios";
+import { backend_url } from "@/App";
 
 const Profile = () => {
   const params = useParams();
   const userId = params.id;
   useGetUserProfile(userId);
 
-  const { userProfile , user } = useSelector((store) => store.auth);
+  const [isFollowing , setIsFollowing] = useState(false)
 
+  const { userProfile , user } = useSelector((store) => store.auth);
+  
   const [activeTab , setActivetab] = useState('posts')
 
   const isLoggedinUserProfle = user?._id === userProfile?._id;
-  const isFollowing = false;
 
   const handleTabChange = (tab) => setActivetab(tab)
   
   const displayedPost = ( activeTab === "posts" ) ? userProfile?.posts : userProfile?.bookmarks;
 
-  // console.log(displayedPost.image);
+  const followOrUnofollowHandler = async () => {
+    try {
+      
+      const response = await axios.get(backend_url + `/api/user/followorunfollow/${userProfile?._id}` , {withCredentials:true})
 
+      if(response.data.success){
+        setIsFollowing(response.data.success)
+        toast.success(response.data.message)
+      }
+
+    } catch (error) {
+      console.log(error.message)
+      toast.error(error.message)
+    }
+  }
 
   return (
     <div className="flex max-w-5xl justify-center mx-auto pl-10">
@@ -91,6 +108,7 @@ const Profile = () => {
                   </>
                 ) : (
                   <Button
+                  onClick={followOrUnofollowHandler}
                     className="bg-black text-white h-8 cursor-pointer hover:bg-gray-700"
                     variant="secondary"
                   >
@@ -100,9 +118,9 @@ const Profile = () => {
               </div>
 
                 <div className="flex items-center gap-5">
-                  <p className="font-semibold">{userProfile?.posts.length} <span className="text-gray-500">posts</span></p>
-                  <p className="font-semibold">{userProfile?.followers.length} <span className="text-gray-500">followers</span></p>
-                  <p className="font-semibold">{userProfile?.following.length} <span className="text-gray-500">following</span></p>
+                  <p className="font-semibold">{userProfile?.posts?.length} <span className="text-gray-500">posts</span></p>
+                  <p className="font-semibold">{userProfile?.followers?.length} <span className="text-gray-500">followers</span></p>
+                  <p className="font-semibold">{userProfile?.following?.length} <span className="text-gray-500">following</span></p>
                 </div>
 
                 <div className="flex flex-col gap-2">
@@ -151,12 +169,12 @@ const Profile = () => {
 
                           <button className="flex items-center gap-2 hover:text-gray-300">
                             <FaHeart className="text-2xl text-white"/>
-                            <span>{post?.likes.length}</span>
+                            <span>{post?.likes?.length}</span>
                           </button>
 
                           <button className="flex items-center gap-2 hover:text-gray-300">
                             <FaComment className="text-2xl text-white"/>
-                            <span>{post?.comments.length}</span>
+                            <span>{post?.comments?.length}</span>
                           </button>
 
                       </div>
