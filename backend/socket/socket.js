@@ -22,14 +22,14 @@ io.on("connection" , (socket) => {
     const userId = socket.handshake.query.userId;
     if(userId){
         userSocketMap[userId] = socket.id
-        console.log(`user connected : UserId = ${userId} , socketid = ${ socket.id}`);
+        // console.log(`user connected : UserId = ${userId} , socketid = ${ socket.id}`);
     }
 
     io.emit('getOnlineUsers' , Object.keys(userSocketMap))
 
     socket.on('disconnect' , () => {
         if(userId){
-            console.log(`user connected : UserId = ${userId} , socketid = ${ socket.id}`);
+            // console.log(`user connected : UserId = ${userId} , socketid = ${ socket.id}`);
             delete userSocketMap[userId];
         }
         io.emit('getOnlineUsers' , Object.keys(userSocketMap))

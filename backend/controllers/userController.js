@@ -237,7 +237,7 @@ const followOrUnfollow = async (req,res) => {
                 User.updateOne({_id:jiskoFollowKaruga} , {$pull:{followers:folloKarneWala}})
             ])
             return res.status(200).json({
-                message:"Unfollowed successfull",
+                message:"Unfollowed successfully",
                 success:true
             })
         } else { // not follow do follow
@@ -246,7 +246,7 @@ const followOrUnfollow = async (req,res) => {
                 User.updateOne({_id:jiskoFollowKaruga} , {$push:{followers:folloKarneWala}})
             ])
             return res.status(200).json({
-                message:"Followed successfull",
+                message:"Followed successfully",
                 success:true
             })
         }

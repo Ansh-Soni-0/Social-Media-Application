@@ -20,6 +20,6 @@ userRouter.get("/logout" , logout)
 userRouter.get("/:id/profile" ,isAuthenticated , getProfile)
 userRouter.post("/profile/edit" ,isAuthenticated, upload.single("profilePhoto") , editProfile)
 userRouter.get("/suggested" , isAuthenticated , getSuggestedUser)
-userRouter.post("/followorunfollow/:id" , isAuthenticated , followOrUnfollow)
+userRouter.get("/followorunfollow/:id" , isAuthenticated , followOrUnfollow)
 
 module.exports = userRouter
